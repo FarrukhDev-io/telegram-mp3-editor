@@ -1,0 +1,16 @@
+{
+  "name": "mp3-editor-root",
+  "private": true,
+  "workspaces": [
+    "web-app",
+    "web-backend"
+  ],
+  "scripts": {
+    "dev:frontend": "npm run dev --workspace=@mp3-editor/web-app",
+    "dev:backend": "npm run dev --workspace=@mp3-editor/web-backend",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\""
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.4"
+  }
+}
