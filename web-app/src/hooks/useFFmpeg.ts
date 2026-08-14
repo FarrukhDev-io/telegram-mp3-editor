@@ -53,7 +53,7 @@ export function useFFmpeg() {
         ffmpegCommand.push('-i', 'cover.jpg', '-map', '0:0', '-map', '1:0');
       }
 
-      ffmpegCommand.push('-c:a', 'libmp3lame', '-c:v', 'copy', '-id3v2_version', '3');
+      ffmpegCommand.push('-c:a', 'copy', '-c:v', 'copy', '-id3v2_version', '3');
 
       if (title) ffmpegCommand.push('-metadata', `title=${title}`);
       if (artist) ffmpegCommand.push('-metadata', `artist=${artist}`);
