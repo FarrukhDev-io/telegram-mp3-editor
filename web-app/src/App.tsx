@@ -9,7 +9,7 @@ import SpecularButton from './components/SpecularButton';
 import './index.css';
 
 function App() {
-  const { isReady, isProcessing, errorInfo: ffmpegError, processAudio } = useFFmpeg();
+  const { isReady, isProcessing, progress, errorInfo: ffmpegError, processAudio } = useFFmpeg();
   
   const [file, setFile] = useState<File | null>(null);
   const [title, setTitle] = useState('');
@@ -127,7 +127,11 @@ function App() {
                 disabled={isProcessing || !isReady}
               >
                 <div className="font-bold uppercase tracking-widest text-sm flex items-center justify-center gap-2 w-full">
-                  {isProcessing ? <Loader2 size={18} className="animate-spin" /> : 'Save Track'}
+                  {isProcessing ? (
+                    <>
+                      <Loader2 size={18} className="animate-spin" /> {progress}%
+                    </>
+                  ) : 'Save Track'}
                 </div>
               </SpecularButton>
             </div>
@@ -146,6 +150,7 @@ function App() {
           togglePlay={togglePlay}
           handleProcess={handleProcess}
           isProcessing={isProcessing}
+          progress={progress}
           isReady={isReady}
           onUpload={handleFileUpload}
         />

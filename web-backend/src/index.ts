@@ -119,7 +119,12 @@ bot.on('callback_query:data', async (ctx) => {
 // Handle text and photos for metadata
 bot.on('message', async (ctx) => {
   const step = ctx.session.step;
-  if (step === 'idle' || !ctx.session.currentAudioFileId) return;
+  if (step === 'idle' || !ctx.session.currentAudioFileId) {
+    if (ctx.msg.text) {
+      await ctx.reply('🎧 Menga biron bir musiqa (MP3) tashlang, va men uni tahrirlab beraman!');
+    }
+    return;
+  }
 
   if (step === 'awaiting_title' && ctx.msg.text) {
     ctx.session.metadata.title = ctx.msg.text;

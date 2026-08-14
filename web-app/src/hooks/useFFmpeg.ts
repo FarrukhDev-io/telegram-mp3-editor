@@ -15,11 +15,16 @@ export function useFFmpeg() {
   const [isReady, setIsReady] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorInfo, setErrorInfo] = useState<string>('');
+  const [progress, setProgress] = useState<number>(0);
 
   useEffect(() => {
     const load = async () => {
       try {
-        await ffmpegRef.current.load();
+        const ffmpeg = ffmpegRef.current;
+        ffmpeg.on('progress', ({ progress, time }) => {
+          setProgress(Math.round(progress * 100));
+        });
+        await ffmpeg.load();
         setIsReady(true);
       } catch (err: any) {
         setErrorInfo(err?.message || 'Failed to load FFmpeg');
@@ -31,6 +36,7 @@ export function useFFmpeg() {
   const processAudio = async (options: ProcessOptions): Promise<File | null> => {
     if (!isReady) return null;
     setIsProcessing(true);
+    setProgress(0);
     setErrorInfo('');
 
     try {
@@ -70,5 +76,5 @@ export function useFFmpeg() {
     }
   };
 
-  return { isReady, isProcessing, errorInfo, processAudio };
+  return { isReady, isProcessing, progress, errorInfo, processAudio };
 }

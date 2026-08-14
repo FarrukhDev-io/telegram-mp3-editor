@@ -11,11 +11,12 @@ interface Props {
   togglePlay: () => void;
   handleProcess: () => void;
   isProcessing: boolean;
+  progress: number;
   isReady: boolean;
   onUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export function BottomPlayer({ file, title, artist, fileName, coverImage, isPlaying, togglePlay, handleProcess, isProcessing, isReady, onUpload }: Props) {
+export function BottomPlayer({ file, title, artist, fileName, coverImage, isPlaying, togglePlay, handleProcess, isProcessing, progress, isReady, onUpload }: Props) {
   if (!file) {
     return (
       <div className="fixed bottom-0 left-0 right-0 h-[160px] bg-gradient-to-b from-transparent via-black/80 to-black flex items-center justify-center pt-10 px-4 z-50 animate-in slide-in-from-bottom-10 duration-500">
@@ -73,7 +74,7 @@ export function BottomPlayer({ file, title, artist, fileName, coverImage, isPlay
            onClick={handleProcess}
          >
            <div className="font-bold uppercase tracking-widest text-sm">
-             {isProcessing ? 'Saving...' : 'Save Track'}
+             {isProcessing ? `Saving... ${progress}%` : 'Save Track'}
            </div>
          </SpecularButton>
       </div>
