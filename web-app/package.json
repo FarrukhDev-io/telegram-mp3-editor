@@ -11,14 +11,14 @@
   },
   "dependencies": {
     "@ffmpeg/core": "^0.12.10",
-    "@ffmpeg/ffmpeg": "^0.12.15",
-    "@ffmpeg/util": "^0.12.2",
     "@twa-dev/sdk": "^8.0.2",
+    "browser-id3-writer": "^6.4.0",
     "lucide-react": "^1.31.0",
     "ogl": "^1.0.11",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "wavesurfer.js": "^7.12.11"
+    "wavesurfer.js": "^7.12.11",
+    "zustand": "^5.0.15"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",

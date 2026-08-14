@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import WaveSurfer from 'wavesurfer.js';
+import { useAudioStore } from '../store/useAudioStore';
 
-export function useWaveSurfer(file: File | null) {
+export function useWaveSurfer() {
   const waveformRef = useRef<HTMLDivElement>(null);
   const wavesurfer = useRef<WaveSurfer | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const { file, setIsPlaying } = useAudioStore();
 
   useEffect(() => {
     if (!file || !waveformRef.current) return;
@@ -36,8 +37,9 @@ export function useWaveSurfer(file: File | null) {
       if (wavesurfer.current) {
         wavesurfer.current.destroy();
       }
+      URL.revokeObjectURL(objectUrl);
     };
-  }, [file]);
+  }, [file, setIsPlaying]);
 
   const togglePlay = () => {
     if (wavesurfer.current) {
@@ -45,5 +47,6 @@ export function useWaveSurfer(file: File | null) {
     }
   };
 
-  return { waveformRef, isPlaying, togglePlay };
+  return { waveformRef, togglePlay };
 }
+

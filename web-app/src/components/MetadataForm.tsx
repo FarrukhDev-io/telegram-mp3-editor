@@ -1,17 +1,9 @@
 import React from 'react';
+import { useAudioStore } from '../store/useAudioStore';
 
-interface Props {
-  title: string;
-  setTitle: (s: string) => void;
-  artist: string;
-  setArtist: (s: string) => void;
-  album: string;
-  setAlbum: (s: string) => void;
-  handleImageUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  coverImage: File | null;
-}
+export function MetadataForm() {
+  const { title, setTitle, artist, setArtist, album, setAlbum, coverImage, setCoverImage } = useAudioStore();
 
-export function MetadataForm({ title, setTitle, artist, setArtist, album, setAlbum, handleImageUpload, coverImage }: Props) {
   const inputClass = "bg-black/20 backdrop-blur-sm border border-white/10 shadow-[inset_0_2px_4px_rgba(0,0,0,0.3)] text-white px-4 py-3 rounded-xl text-sm font-medium focus:outline-none focus:border-[#1ed760]/50 focus:ring-1 focus:ring-[#1ed760]/50 transition-all placeholder-[#b3b3b3]/50";
 
   const fields = [
@@ -19,6 +11,13 @@ export function MetadataForm({ title, setTitle, artist, setArtist, album, setAlb
     { label: 'Artist', value: artist, onChange: setArtist, placeholder: 'Artist name' },
     { label: 'Album', value: album, onChange: setAlbum, placeholder: 'Album name' },
   ];
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedImage = e.target.files?.[0];
+    if (selectedImage && selectedImage.type.includes('image')) {
+      setCoverImage(selectedImage);
+    }
+  };
 
   return (
     <div className="bg-white/5 backdrop-blur-2xl border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.5)] p-6 rounded-3xl flex flex-col gap-5 mt-2">

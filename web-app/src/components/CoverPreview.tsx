@@ -1,11 +1,9 @@
 import { Upload } from 'lucide-react';
 import { useObjectURL } from '../hooks/useObjectURL';
+import { useAudioStore } from '../store/useAudioStore';
 
-interface Props {
-  coverImage: File | null;
-}
-
-export function CoverPreview({ coverImage }: Props) {
+export function CoverPreview() {
+  const { coverImage } = useAudioStore();
   const imageUrl = useObjectURL(coverImage);
 
   return (
@@ -21,3 +19,4 @@ export function CoverPreview({ coverImage }: Props) {
     </div>
   );
 }
+

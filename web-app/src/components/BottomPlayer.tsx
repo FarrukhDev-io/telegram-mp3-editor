@@ -1,24 +1,41 @@
 import { Play, Pause, Upload } from 'lucide-react';
 import SpecularButton from './SpecularButton';
 import { useObjectURL } from '../hooks/useObjectURL';
+import { useAudioStore } from '../store/useAudioStore';
+import { useID3Editor } from '../hooks/useID3Editor';
+import { useWaveSurfer } from '../hooks/useWaveSurfer';
 
-interface Props {
-  file: File | null;
-  title: string;
-  artist: string;
-  fileName: string;
-  coverImage: File | null;
-  isPlaying: boolean;
-  togglePlay: () => void;
-  handleProcess: () => void;
-  isProcessing: boolean;
-  progress: number;
-  isReady: boolean;
-  onUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
-
-export function BottomPlayer({ file, title, artist, fileName, coverImage, isPlaying, togglePlay, handleProcess, isProcessing, progress, isReady, onUpload }: Props) {
+export function BottomPlayer() {
+  const { file, title, artist, coverImage, isPlaying, isProcessing, progress, setFile, setTitle } = useAudioStore();
+  const { processAudio } = useID3Editor();
+  const { togglePlay } = useWaveSurfer();
+  
   const imageUrl = useObjectURL(coverImage);
+
+  const onUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile && selectedFile.type.includes('audio')) {
+      setFile(selectedFile);
+      setTitle(selectedFile.name.replace(/\.[^/.]+$/, ""));
+    }
+  };
+
+  const handleProcess = async () => {
+    if (!file) return;
+    const { title, artist, album, coverImage } = useAudioStore.getState();
+    const resultFile = await processAudio(file, title, artist, album, coverImage);
+    
+    if (resultFile) {
+      const url = URL.createObjectURL(resultFile);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = resultFile.name || 'edited_audio.mp3';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+  };
 
   if (!file) {
     return (
@@ -53,7 +70,7 @@ export function BottomPlayer({ file, title, artist, fileName, coverImage, isPlay
           )}
         </div>
         <div className="flex flex-col overflow-hidden">
-          <span className="text-white text-sm font-medium truncate">{title || fileName}</span>
+          <span className="text-white text-sm font-medium truncate">{title || file.name}</span>
           <span className="text-[#b3b3b3] text-xs truncate">{artist || 'Unknown Artist'}</span>
         </div>
       </div>
@@ -73,7 +90,7 @@ export function BottomPlayer({ file, title, artist, fileName, coverImage, isPlay
            tint="#1ed760" tintOpacity={0.2} blur={16} 
            textColor="#1ed760" lineColor="#ffffff" baseColor="#1ed760"
            autoAnimate={true} radius={30} size="md"
-           disabled={isProcessing || !isReady}
+           disabled={isProcessing}
            onClick={handleProcess}
          >
            <div className="font-bold uppercase tracking-widest text-sm">
@@ -84,3 +101,4 @@ export function BottomPlayer({ file, title, artist, fileName, coverImage, isPlay
     </div>
   );
 }
+
