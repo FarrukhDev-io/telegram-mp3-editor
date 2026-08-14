@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { Upload, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { useFFmpeg } from './hooks/useFFmpeg';
 import { useWaveSurfer } from './hooks/useWaveSurfer';
 import { MetadataForm } from './components/MetadataForm';
 import { BottomPlayer } from './components/BottomPlayer';
+import { CoverPreview } from './components/CoverPreview';
 import Ferrofluid from './components/Ferrofluid';
 import SpecularButton from './components/SpecularButton';
 import './index.css';
@@ -96,16 +97,7 @@ function App() {
 
         {file && (
           <div className="flex flex-col gap-8 animate-in fade-in slide-in-from-bottom-4 duration-500 mt-4">
-            <div className="w-full max-w-[280px] aspect-square mx-auto rounded-3xl bg-white/5 backdrop-blur-2xl border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.5)] flex items-center justify-center overflow-hidden transition-all hover:bg-white/10">
-              {coverImage ? (
-                <img src={URL.createObjectURL(coverImage)} alt="Cover" className="w-full h-full object-cover" />
-              ) : (
-                <div className="flex flex-col items-center gap-2 text-[#535353]">
-                  <Upload size={48} strokeWidth={1} />
-                  <span className="text-xs font-bold tracking-widest">NO COVER</span>
-                </div>
-              )}
-            </div>
+            <CoverPreview coverImage={coverImage} />
             
             <div className="w-full bg-white/5 backdrop-blur-2xl border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.5)] rounded-3xl relative p-4">
               <div className="w-full" ref={waveformRef}></div>

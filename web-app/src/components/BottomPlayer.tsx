@@ -1,5 +1,6 @@
 import { Play, Pause, Upload } from 'lucide-react';
 import SpecularButton from './SpecularButton';
+import { useObjectURL } from '../hooks/useObjectURL';
 
 interface Props {
   file: File | null;
@@ -17,6 +18,8 @@ interface Props {
 }
 
 export function BottomPlayer({ file, title, artist, fileName, coverImage, isPlaying, togglePlay, handleProcess, isProcessing, progress, isReady, onUpload }: Props) {
+  const imageUrl = useObjectURL(coverImage);
+
   if (!file) {
     return (
       <div className="fixed bottom-0 left-0 right-0 h-[160px] bg-gradient-to-b from-transparent via-black/80 to-black flex items-center justify-center pt-10 px-4 z-50 animate-in slide-in-from-bottom-10 duration-500">
@@ -45,8 +48,8 @@ export function BottomPlayer({ file, title, artist, fileName, coverImage, isPlay
     <div className="fixed bottom-0 left-0 right-0 h-[140px] bg-gradient-to-b from-transparent via-black/90 to-black flex items-end pb-6 justify-between px-4 z-50">
       <div className="flex items-center gap-3 flex-1 min-w-0">
         <div className="w-14 h-14 rounded-md bg-[#282828] overflow-hidden flex-shrink-0 shadow-lg">
-          {coverImage && (
-            <img src={URL.createObjectURL(coverImage)} alt="Thumb" className="w-full h-full object-cover" />
+          {imageUrl && (
+            <img src={imageUrl} alt="Thumb" className="w-full h-full object-cover" />
           )}
         </div>
         <div className="flex flex-col overflow-hidden">
