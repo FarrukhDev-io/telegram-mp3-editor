@@ -1,4 +1,4 @@
-import ID3Writer from 'browser-id3-writer';
+import { ID3Writer } from 'browser-id3-writer';
 import { useAudioStore } from '../store/useAudioStore';
 
 export function useID3Editor() {
@@ -19,6 +19,7 @@ export function useID3Editor() {
       const arrayBuffer = await file.arrayBuffer();
       setProgress(30);
 
+      // @ts-ignore
       const writer = new ID3Writer(arrayBuffer);
       
       if (title) writer.setFrame('TIT2', title);
@@ -29,7 +30,6 @@ export function useID3Editor() {
         setStatus('Processing image...');
         const imageBuffer = await coverImage.arrayBuffer();
         
-        const mimeType = coverImage.type || 'image/jpeg';
         
         writer.setFrame('APIC', {
           type: 3,
@@ -41,10 +41,9 @@ export function useID3Editor() {
 
       setProgress(60);
       setStatus('Writing ID3 tags...');
-      writer.addTag();
+      const taggedBuffer = writer.addTag();
       
       setProgress(90);
-      const taggedBuffer = writer.arrayBuffer;
       const blob = new Blob([taggedBuffer], { type: 'audio/mpeg' });
       const resultFile = new File([blob], file.name || 'edited_audio.mp3', { type: 'audio/mpeg' });
       
