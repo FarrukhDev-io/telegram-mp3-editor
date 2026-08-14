@@ -21,7 +21,7 @@ export function useFFmpeg() {
     const load = async () => {
       try {
         const ffmpeg = ffmpegRef.current;
-        ffmpeg.on('progress', ({ progress, time }) => {
+        ffmpeg.on('progress', ({ progress }) => {
           setProgress(Math.round(progress * 100));
         });
         await ffmpeg.load();
