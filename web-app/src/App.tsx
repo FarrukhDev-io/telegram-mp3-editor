@@ -43,7 +43,7 @@ function App() {
       <div className="relative z-10 max-w-2xl mx-auto p-6">
         <header className="flex flex-col gap-2 mb-10">
           <h1 className="text-3xl font-bold tracking-tight">Studio</h1>
-          <p className="text-[#b3b3b3] text-sm font-medium">Professional Audio Editor</p>
+          <p className="text-[#b3b3b3] text-sm font-medium">MP3 Metadata Tagger</p>
         </header>
         
         {status && (

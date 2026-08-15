@@ -51,8 +51,9 @@ export function useID3Editor() {
       setIsProcessing(false);
       return resultFile;
       
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error writing ID3 tags:', error);
+      setStatus(`Error: ${error.message || 'Failed to process file'}`);
       setIsProcessing(false);
       return null;
     }
