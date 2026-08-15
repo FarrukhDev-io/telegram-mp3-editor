@@ -2,16 +2,10 @@
   "name": "mp3-editor-root",
   "private": true,
   "workspaces": [
-    "web-app",
-    "web-backend"
+    "web-app"
   ],
   "scripts": {
-    "dev:frontend": "npm run dev --workspace=@mp3-editor/web-app",
-    "dev:backend": "npm run dev --workspace=@mp3-editor/web-backend",
-    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\""
-  },
-  "devDependencies": {
-    "concurrently": "^10.0.4"
+    "dev": "npm run dev --workspace=@mp3-editor/web-app"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
